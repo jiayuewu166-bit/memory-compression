@@ -1,70 +1,77 @@
-# 1. Problem Understanding
-1.1 Problem Summary
+## 1. Problem Understanding
 
-This challenge requires compressing a 20-turn conversation into a context that fits within a strict token limit , while ensuring that all decision-critical information remains intact.
+Large Language Models (LLMs) operate under strict context windows. Once a multi-turn conversation grows beyond this limit, critical information becomes truncated or forgotten, leading to inconsistent reasoning, incorrect decisions, or even unsafe outputs. 
 
-This is not a summarization problem.It is a memory engineering problem:
+**Task B: Memory Compression** focuses on building a robust method to reduce a 20-turn dialogue into a compressed context that:
 
-Preserve goals, constraints, facts, and decisions
+- Fits within a target token budget (e.g., ≤ 2000 tokens)
+- Preserves all task-critical information
+- Prevents hallucination and semantic drift
+- Remains usable for downstream inference or agent actions
 
-Remove irrelevant, redundant, or low-impact details
+The goal is not simply to “summarize” but to engineer a **faithful, structured, loss-aware memory representation**.
 
-Avoid semantic drift or hallucinations
+---
 
-Maximize information density under token constraints
+### 1.1 Why Compression is Non-Trivial
 
-Maintain downstream reasoning consistency
+Conversations contain multiple information types:
 
-The compressed output acts as an agent memory state, enabling an LLM to continue the conversation reliably.
+- High-value: goals, constraints, decisions  
+- Medium-value: key facts, preferences  
+- Low-value: explanations, examples, chit-chat  
 
-1.2 Key Challenges
-1. Token Constraint Is a Hard Limit
+A naïve compression approach loses essential reasoning anchors or introduces model hallucinations.  
+Therefore, the challenge requires **selective retention**, not uniform shortening.
 
-If compression is insufficient, critical information gets truncated, causing:
+Real-world agents must maintain **logical continuity**, ensure **constraint adherence**, and avoid drifting from user intent even after compression. This demands explicit information categorization, structured storage, and multi-stage processing.
 
-Loss of task intent
+---
 
-Incorrect reasoning
 
-Inconsistent or unsafe behavior
+### 1.2 Key Challenge Areas
 
-2. Compression-Fidelity Trade-off
+#### **A. Multi-Type Information Handling**
+Conversations are heterogeneous.  
+Uniform summarization → catastrophic information loss.
 
-Higher compression → higher risk of information loss.
+#### **B. Preventing Semantic Drift**
+If goals or constraints are partially compressed or rewritten, downstream answers deviate unpredictably.
 
-The design must balance:
+#### **C. Logical Consistency**
+The compressed output must represent a coherently updated state, not a disconnected summary.
 
-Information retention
+#### **D. Hallucination Avoidance**
+LLM-generated summaries may introduce new facts—this must be prevented through controlled extraction.
 
-Token efficiency
+#### **E. Token-Budget Reliability**
+Even high-quality compression is useless if it occasionally exceeds token limit.
 
-Downstream reasoning accuracy
+---
 
-3. State Drift
+### 1.3 High-Level Solution Approach
 
-Without precise retention of goals and constraints, an agent may “forget what task it is solving,” leading to:
+- **Extraction:** Capture important information with minimal loss  
+- **Aggregation:** Remove redundancy; consolidate facts  
+- **Semantic Compression:** Abstract low-priority content  
+- **Token Check:** Enforce budget and apply fallback compression  
 
-Wrong recommendations
+The final output is a **two-layer structured memory** combining correctness and efficiency.
 
-Invalid actions
+---
+### 1.4 What Success Looks Like
 
-Contradicting earlier decisions
+A successful compression system should enable an LLM to:
 
-4. Mixed Information Types
+- Answer questions with the same semantic intent as if it had the full 20-turn history  
+- Maintain all constraints and decisions correctly  
+- Adapt to user goals consistently  
+- Avoid hallucinations or invented facts  
+- Produce actions aligned with the original conversation
 
-Conversation content includes:
+- for example， required all **within 2000 tokens**.
 
-High-value constraints
-
-Medium-value supporting reasoning
-
-Low-value chit-chat
-
-Repetitions
-
-Examples and metaphors
-
-Not all information should be treated equally → requires prioritization.
+This is the foundation upon which the rest of the system (taxonomy, extraction, compression strategies, evaluation) is built.
 
 ## 2. Information Taxonomy & Prioritization
 
