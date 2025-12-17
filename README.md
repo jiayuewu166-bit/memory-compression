@@ -298,9 +298,6 @@ Clarified distinction between Y and Z
 
 Refined plan through iterative reasoning
 
-yaml
-复制代码
-
 This design preserves meaning without retaining unnecessary narrative details.
 
 ---
