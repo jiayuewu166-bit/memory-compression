@@ -560,13 +560,13 @@ A compression scheme must show **quality per token**, not just lower length.
    - Choose an operating point that balances:
      - Sufficient accuracy
      - Meaningful cost savings
-## 6. Edge Cases
+## 5. Edge Cases
 
 This section considers **non-standard or adversarial conversational patterns** and evaluates how the compression pipeline handles them.
 
 ---
 
-### 6.1 Case 1 – Total Context Pivot
+### 5.1 Case 1 – Total Context Pivot
 
 **Scenario**  
 User changes the main goal late in the conversation.
@@ -578,7 +578,7 @@ User changes the main goal late in the conversation.
 
 ---
 
-### 6.2 Case 2 – Conflicting Constraints
+### 5.2 Case 2 – Conflicting Constraints
 
 **Scenario**  
 Old and new constraints contradict (e.g., budget unlimited → budget limit).
@@ -589,7 +589,7 @@ Old and new constraints contradict (e.g., budget unlimited → budget limit).
 
 ---
 
-### 6.3 Case 3 – Extremely Sparse Information
+### 5.3 Case 3 – Extremely Sparse Information
 
 **Scenario**  
 Multiple turns contain little or no information (“ok”, “uh-huh”, “yes”).
@@ -600,7 +600,7 @@ Multiple turns contain little or no information (“ok”, “uh-huh”, “yes�
 
 ---
 
-### 6.4 Case 4 – Long Reasoning Chains
+### 5.4 Case 4 – Long Reasoning Chains
 
 **Scenario**  
 Explanations are multi-paragraph or chain-of-thought heavy.
@@ -611,7 +611,7 @@ Explanations are multi-paragraph or chain-of-thought heavy.
 
 ---
 
-### 6.5 Case 5 – Emotional or Noisy Dialogue
+### 5.5 Case 5 – Emotional or Noisy Dialogue
 
 **Scenario**  
 The user expresses emotion, frustration, sarcasm, or small talk.
@@ -623,13 +623,13 @@ The user expresses emotion, frustration, sarcasm, or small talk.
 
 ---
 
-## 7. Limitations
+## 6. Limitations
 
 While the hybrid memory architecture demonstrates strong interpretability and robustness, several limitations remain.
 
 ---
 
-### 7.1 Extraction Accuracy Constraints
+### 6.1 Extraction Accuracy Constraints
 
 - Pattern-based extraction may miss nuanced or indirect constraints  
 - No cross-checking mechanism currently exists  
@@ -637,14 +637,14 @@ While the hybrid memory architecture demonstrates strong interpretability and ro
 
 ---
 
-### 7.2 Loss of Stylistic Nuance
+### 6.2 Loss of Stylistic Nuance
 
 - Semantic compression removes emotional tone and stylistic cues  
 - Persona consistency may be reduced in certain applications  
 
 ---
 
-### 7.3 Token Estimation Heuristics
+### 6.3 Token Estimation Heuristics
 The current approach uses:1 token ≈ 4 characters
 This approximation:
 
@@ -654,21 +654,21 @@ This approximation:
 
 ---
 
-### 7.4 Limited Reasoning-State Preservation
+### 6.4 Limited Reasoning-State Preservation
 
 The system stores **facts**, not **full reasoning chains**.  
 It cannot reconstruct detailed reasoning steps if needed.
 
 ---
 
-### 7.5 Schema Rigidity
+### 6.5 Schema Rigidity
 
 The JSON schema works best for **task-oriented dialogues**.  
 Creative or exploratory conversations may not map cleanly into slots.
 
 ---
 
-### 7.6 No Embedding-Based Deduplication
+### 6.6 No Embedding-Based Deduplication
 
 Without embeddings:
 
@@ -677,7 +677,7 @@ Without embeddings:
 
 ---
 
-### 7.7 No Feedback Loop or Online Adaptation
+### 6.7 No Feedback Loop or Online Adaptation
 
 The compression logic:
 
@@ -687,13 +687,13 @@ The compression logic:
 
 ---
 
-## 8. Future Improvements
+## 7. Future Improvements
 
 Several enhancements could significantly improve the system’s flexibility and robustness.
 
 ---
 
-### 8.1 Integrating RAG for Long-Term Memory
+### 7.1 Integrating RAG for Long-Term Memory
 
 - Store P2/P3 narrative content in a **local vector store** instead of discarding  
 - Retrieve on demand using semantic search  
@@ -701,7 +701,7 @@ Several enhancements could significantly improve the system’s flexibility and 
 
 ---
 
-### 8.2 Dynamic Compression Policies
+### 7.2 Dynamic Compression Policies
 
 - Replace static P0–P3 priorities with learned weights  
 - Train task-specific compression profiles  
@@ -709,7 +709,7 @@ Several enhancements could significantly improve the system’s flexibility and 
 
 ---
 
-### 8.3 Self-Correction Layer
+### 7.3 Self-Correction Layer
 
 Introduce a verification loop:
 
@@ -719,7 +719,7 @@ Introduce a verification loop:
 
 ---
 
-### 8.4 Persona & Style Embedding
+### 7.4 Persona & Style Embedding
 
 - Extract persona embeddings before compression  
 - Reattach to compressed memory as metadata  
@@ -727,7 +727,7 @@ Introduce a verification loop:
 
 ---
 
-### 8.5 Tokenizer-Aware Compression
+### 7.5 Tokenizer-Aware Compression
 
 - Replace character-count heuristic with true tiktoken  
 - Improve token control, especially for multilingual input  
